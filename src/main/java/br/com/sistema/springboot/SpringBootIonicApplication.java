@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import br.com.sistema.springboot.domain.Categoria;
 import br.com.sistema.springboot.domain.Cidade;
 import br.com.sistema.springboot.domain.Cliente;
+import br.com.sistema.springboot.domain.Endereco;
 import br.com.sistema.springboot.domain.Estado;
 import br.com.sistema.springboot.domain.Produto;
 import br.com.sistema.springboot.domain.enums.TipoCliente;

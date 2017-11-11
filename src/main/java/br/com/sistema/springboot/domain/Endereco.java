@@ -1,4 +1,4 @@
-package br.com.sistema.springboot;
+package br.com.sistema.springboot.domain;
 
 import java.io.Serializable;
 
@@ -9,8 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import br.com.sistema.springboot.domain.Cidade;
-import br.com.sistema.springboot.domain.Cliente;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class Endereco implements Serializable{
@@ -26,6 +25,7 @@ public class Endereco implements Serializable{
 	private String bairro;
 	private String cep;
 	
+	@JsonBackReference
 	@ManyToOne()
 	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
