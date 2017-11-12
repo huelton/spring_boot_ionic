@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.sistema.springboot.domain.Pedido;
-import br.com.sistema.springboot.exceptions.ObjectNotFoundException;
 import br.com.sistema.springboot.respositories.PedidoRepository;
+import br.com.sistema.springboot.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class PedidoService {
