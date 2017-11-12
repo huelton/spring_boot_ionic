@@ -1,6 +1,8 @@
 package br.com.sistema.springboot.resources;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,24 +14,25 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.sistema.springboot.domain.Categoria;
+import br.com.sistema.springboot.dto.CategoriaDTO;
 import br.com.sistema.springboot.services.CategoriaService;
 
 @RestController
 @RequestMapping(value="/categorias")
-public class CategoriaResource {
-	
+public class CategoriaResource {	
 	
 	@Autowired
-	private CategoriaService CategoriaService;
+	private CategoriaService CategoriaService;//CAMADA DE SERVIÇOS
 
+	//ENCONTRA UMA CATEGORIA PELO ID
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<Categoria> find(@PathVariable Integer id){
 		Categoria obj = CategoriaService.find(id);
 		
-		return ResponseEntity.ok().body(obj);
-		
+		return ResponseEntity.ok().body(obj);		
 	}
 	
+	//INSERI UMA CATEGORIA
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<Void> insert(@RequestBody Categoria obj){
 		obj = CategoriaService.insert(obj);
@@ -38,7 +41,7 @@ public class CategoriaResource {
 		return ResponseEntity.created(uri).build();
 	}
 	
-	
+	//ALTERA UMA CATEGORIA
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
 	public ResponseEntity<Void> update(@RequestBody Categoria obj, @PathVariable Integer id){
 		obj.setId(id);
@@ -47,12 +50,23 @@ public class CategoriaResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	//DELETA UMA CATEGORIA
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Integer id){
 		CategoriaService.delete(id);
 		
-		return ResponseEntity.noContent().build();
+		return ResponseEntity.noContent().build();		
+	}
+	
+	//RETORNA TODAS AS CATEGORIAS
+	@RequestMapping(method=RequestMethod.GET)
+	public ResponseEntity<List<CategoriaDTO>> findAll(){
+		List <Categoria> list = CategoriaService.findAll();
+		List <CategoriaDTO> listDto = list.stream().map(obj -> new CategoriaDTO(obj)
+				                                         ).collect(Collectors.toList()); //CONVERTE UMA LISTA PARA OUTRA LISTA
+		 return ResponseEntity.ok().body(listDto);
 		
 	}
+	
 	
 }
