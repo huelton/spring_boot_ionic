@@ -61,7 +61,7 @@ public class ClienteService {
 		try{
 			clienteRepository.delete(id);
 		}catch(DataIntegrityViolationException e){
-			throw new IntegrityViolationException("Não é possivel excluir porque existem entidades relacionadas");
+			throw new IntegrityViolationException("Não é possivel excluir porque há pedidos relacionados");
 		}
 	}
 
@@ -97,8 +97,7 @@ public class ClienteService {
 		
 		return cli;
 		
-	}
-	
+	}	
 	
 	private void updateData(Cliente newObj, Cliente obj) {
 		newObj.setNome(obj.getNome());
