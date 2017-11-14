@@ -26,12 +26,12 @@ import br.com.sistema.springboot.services.CategoriaService;
 public class CategoriaResource {	
 	
 	@Autowired
-	private CategoriaService CategoriaService;//CAMADA DE SERVIÇOS
+	private CategoriaService categoriaService;//CAMADA DE SERVIÇOS
 
 	//ENCONTRA UMA CATEGORIA PELO ID
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<Categoria> find(@PathVariable Integer id){
-		Categoria obj = CategoriaService.find(id);
+		Categoria obj = categoriaService.find(id);
 		
 		return ResponseEntity.ok().body(obj);		
 	}
@@ -39,8 +39,8 @@ public class CategoriaResource {
 	//INSERE UMA CATEGORIA
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDto){
-		Categoria obj = CategoriaService.fromDTO(objDto);
-		obj = CategoriaService.insert(obj);
+		Categoria obj = categoriaService.fromDTO(objDto);
+		obj = categoriaService.insert(obj);
 		URI uri =ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		
 		return ResponseEntity.created(uri).build();
@@ -49,9 +49,9 @@ public class CategoriaResource {
 	//ATUALIZA UMA CATEGORIA
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO objDto, @PathVariable Integer id){
-		Categoria obj = CategoriaService.fromDTO(objDto);
+		Categoria obj = categoriaService.fromDTO(objDto);
 		obj.setId(id);
-		obj = CategoriaService.update(obj);
+		obj = categoriaService.update(obj);
 		
 		return ResponseEntity.noContent().build();
 	}
@@ -59,7 +59,7 @@ public class CategoriaResource {
 	//DELETA UMA CATEGORIA
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Integer id){
-		CategoriaService.delete(id);
+		categoriaService.delete(id);
 		
 		return ResponseEntity.noContent().build();		
 	}
@@ -67,7 +67,7 @@ public class CategoriaResource {
 	//RETORNA TODAS AS CATEGORIAS
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<List<CategoriaDTO>> findAll(){
-		List <Categoria> list = CategoriaService.findAll();
+		List <Categoria> list = categoriaService.findAll();
 		List <CategoriaDTO> listDto = list.stream().map(obj -> new CategoriaDTO(obj)
 				                                         ).collect(Collectors.toList()); //CONVERTE UMA LISTA PARA OUTRA LISTA
 		 return ResponseEntity.ok().body(listDto);
@@ -81,7 +81,7 @@ public class CategoriaResource {
 			@RequestParam(value="linesPerPage",defaultValue="24") Integer linesPerPage, 
 			@RequestParam(value="orderBy",defaultValue="nome") String orderBy, 
 			@RequestParam(value="direction",defaultValue="ASC") String direction){
-		Page <Categoria> list = CategoriaService.findPage(page, linesPerPage, orderBy, direction);
+		Page <Categoria> list = categoriaService.findPage(page, linesPerPage, orderBy, direction);
 		Page <CategoriaDTO> listDto = list.map(obj -> new CategoriaDTO(obj)); //CONVERTE UMA PAGE PARA OUTRA PAGE DTO
 		 return ResponseEntity.ok().body(listDto);
 		
