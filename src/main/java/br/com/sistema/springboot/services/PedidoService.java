@@ -11,10 +11,10 @@ import br.com.sistema.springboot.services.exceptions.ObjectNotFoundException;
 public class PedidoService {
 
 	@Autowired
-	private PedidoRepository repo;
+	private PedidoRepository pedidoRepository;
 	
 	public Pedido find(Integer id){
-		Pedido obj = repo.findOne(id);
+		Pedido obj = pedidoRepository.findOne(id);
 		if(obj == null ){
 			throw new ObjectNotFoundException("Objeto nao encontrado! id: "+id
 					            +", tipo: "+Pedido.class.getName());
