@@ -5,6 +5,8 @@ import java.io.Serializable;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import br.com.sistema.springboot.domain.Cliente;
 import br.com.sistema.springboot.services.validation.ClienteUpdate;
@@ -23,6 +25,9 @@ public class ClienteDTO  implements Serializable {
 	@NotEmpty(message="Preenchimento Obrigatório")
 	@Email(message="Email Invalido!")
 	private String email;
+	
+	@Autowired
+	BCryptPasswordEncoder bCrypt;
 	
 	public ClienteDTO() {
 	}
