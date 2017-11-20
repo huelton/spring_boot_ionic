@@ -3,7 +3,7 @@ Implementation-Title: spring_boot_ionic
 Implementation-Version: 1.0.0-SNAPSHOT
 Built-By: huelt
 Implementation-Vendor-Id: br.com.sistema.springboot
-Build-Jdk: 1.8.0_101
+Build-Jdk: 1.8.0_152
 Implementation-URL: http://projects.spring.io/spring-boot/spring_boot_
  ionic/
 Created-By: Maven Integration for Eclipse
