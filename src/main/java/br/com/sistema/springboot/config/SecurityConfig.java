@@ -32,7 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	//caminhos permitidos para leitura
 	private static final String[] PLUBLIC_MATCHERS_GET = {
 			"/produtos/**",
-			"/categorias/**"
+			"/categorias/**",
+			"/clientes/**"
 	};
 	
 	@Override
