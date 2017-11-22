@@ -10,7 +10,7 @@ import br.com.sistema.springboot.domain.Cliente;
 import br.com.sistema.springboot.services.validation.ClienteUpdate;
 
 @ClienteUpdate
-public class ClienteDTO  implements Serializable {
+public class ClienteDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
