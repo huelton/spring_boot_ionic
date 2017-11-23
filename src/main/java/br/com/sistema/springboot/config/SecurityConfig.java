@@ -43,9 +43,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	};
 	
 	//caminhos permitidos para leitura
+	
 	private static final String[] PLUBLIC_MATCHERS_GET = {
 			"/produtos/**",
-			"/categorias/**",
+			"/categorias/**"
+	};
+	
+	private static final String[] PLUBLIC_MATCHERS_POST = {
 			"/clientes/**"
 	};
 	
@@ -58,7 +62,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		
 		http.cors().and().csrf().disable();
 		http.authorizeRequests()
-		    .antMatchers(HttpMethod.GET, PLUBLIC_MATCHERS_GET).permitAll()
+			.antMatchers(HttpMethod.POST, PLUBLIC_MATCHERS_POST).permitAll()
+ 		    .antMatchers(HttpMethod.GET, PLUBLIC_MATCHERS_GET).permitAll()
 		    .antMatchers(PLUBLIC_MATCHERS).permitAll()
 		    .anyRequest().authenticated();
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
