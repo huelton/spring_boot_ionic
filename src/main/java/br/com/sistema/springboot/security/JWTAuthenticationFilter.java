@@ -21,9 +21,7 @@ import br.com.sistema.springboot.dto.CredenciaisDTO;
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 	
 	private AuthenticationManager authenticationManager;
-	private JWTUtil jwtUtil;
-	
-	
+	private JWTUtil jwtUtil;	
 	
 	public JWTAuthenticationFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
 	    this.authenticationManager = authenticationManager;
