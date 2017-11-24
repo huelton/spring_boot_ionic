@@ -13,12 +13,15 @@ import org.springframework.stereotype.Service;
 import br.com.sistema.springboot.domain.Cidade;
 import br.com.sistema.springboot.domain.Cliente;
 import br.com.sistema.springboot.domain.Endereco;
+import br.com.sistema.springboot.domain.enums.Perfil;
 import br.com.sistema.springboot.domain.enums.TipoCliente;
 import br.com.sistema.springboot.dto.ClienteDTO;
 import br.com.sistema.springboot.dto.ClienteNewDTO;
 import br.com.sistema.springboot.respositories.CidadeRepository;
 import br.com.sistema.springboot.respositories.ClienteRepository;
 import br.com.sistema.springboot.respositories.EnderecoRepository;
+import br.com.sistema.springboot.security.UserSS;
+import br.com.sistema.springboot.services.exceptions.AuthorizationException;
 import br.com.sistema.springboot.services.exceptions.IntegrityViolationException;
 import br.com.sistema.springboot.services.exceptions.ObjectNotFoundException;
 
@@ -38,6 +41,13 @@ public class ClienteService {
 	private BCryptPasswordEncoder bCrypt;
 	
 	public Cliente find(Integer id){
+		
+		UserSS user = UserService.authenticated();
+		if(user==null || !user.hasHole(Perfil.ADMIN) && !id.equals(user.getId())){
+			throw new AuthorizationException("Acesso Negado!");
+		}
+		
+		
 		Cliente obj = clienteRepository.findOne(id);
 		if(obj == null ){
 			throw new ObjectNotFoundException("Objeto nao encontrado! id: "+id

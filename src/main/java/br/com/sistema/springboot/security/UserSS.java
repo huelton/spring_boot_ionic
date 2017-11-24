@@ -72,6 +72,11 @@ public class UserSS implements UserDetails {
 		return true;
 	}
 
+	public boolean hasHole(Perfil perfil) { 
+		//converte um grantedAuthorities para um perfil esperado para utilizacao do metodo
+		return getAuthorities().contains(new SimpleGrantedAuthority(perfil.getDescricao()));
+	}
+
 	
 	
 }
