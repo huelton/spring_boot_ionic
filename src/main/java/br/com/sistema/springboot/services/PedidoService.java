@@ -13,6 +13,7 @@ import br.com.sistema.springboot.domain.ItemPedido;
 import br.com.sistema.springboot.domain.PagamentoComBoleto;
 import br.com.sistema.springboot.domain.Pedido;
 import br.com.sistema.springboot.domain.enums.EstadoPagamento;
+import br.com.sistema.springboot.domain.enums.Perfil;
 import br.com.sistema.springboot.respositories.ClienteRepository;
 import br.com.sistema.springboot.respositories.ItemPedidoRepository;
 import br.com.sistema.springboot.respositories.PagamentoRepository;
@@ -53,6 +54,12 @@ public class PedidoService {
 			throw new ObjectNotFoundException("Objeto nao encontrado! id: "+id
 					            +", tipo: "+Pedido.class.getName());
 		}
+		
+		 UserSS user = UserService.authenticated();
+		 if(user == null || !user.hasHole(Perfil.ADMIN) && !obj.getCliente().getId().equals(user.getId())){
+			 throw new AuthorizationException("Acesso Negado!");
+		 }
+		
 		return obj;
 	}
 
