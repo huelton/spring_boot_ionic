@@ -140,12 +140,14 @@ public class DBService {
 	    Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "40400010", cli1, c2);
 	    Endereco e3 = new Endereco(null, "Rua magalhaes", "2453", "ap 205", "Vila Ferraz", "05893001", cli2, c1);
 	    Endereco e4 = new Endereco(null, "Avenida Castelo Myu Espeno", "240", "Bloco A", "Jardim Planapolis", "35562001", cli3, c3);
+
 	    
 	    cli1.getEnderecos().addAll(Arrays.asList(e1,e2));
 	    cli2.getEnderecos().addAll(Arrays.asList(e3));
 	    cli3.getEnderecos().addAll(Arrays.asList(e4));
 	    
 	    clienteRepository.save(Arrays.asList(cli1, cli2, cli3));
+
 	    enderecoRepository.save(Arrays.asList(e1,e2,e3,e4));
 	    
 	    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
@@ -154,6 +156,7 @@ public class DBService {
 	    
 	    Pedido ped2 = new Pedido(null, sdf.parse("10/10/2017 18:23"), cli1,e2);
 	    
+
 	    Pedido ped3 = new Pedido(null, sdf.parse("10/10/2017 10:28"), cli3,e4);
 	    
 	    Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
@@ -163,7 +166,6 @@ public class DBService {
 	    ped2.setPagamento(pagto2);
 	    
 	    Pagamento pagto3 = new PagamentoComBoleto(null, EstadoPagamento.QUITADO,ped3, sdf.parse("20/10/2017 14:25"), null);
-	    ped3.setPagamento(pagto3);
 	    
 	    cli1.getPedidos().addAll(Arrays.asList(ped1,ped2));
 	    cli3.getPedidos().addAll(Arrays.asList(ped3));
@@ -186,7 +188,11 @@ public class DBService {
         p3.getItens().addAll(Arrays.asList(ip2));
         p8.getItens().addAll(Arrays.asList(ip4));
         p9.getItens().addAll(Arrays.asList(ip5));
+
+        p4.getItens().addAll(Arrays.asList(ip4));
+        p6.getItens().addAll(Arrays.asList(ip5));
         
-        itemPedidoRepository.save(Arrays.asList(ip1,ip2,ip3,ip4,ip5));
+        itemPedidoRepository.save(Arrays.asList(ip1,ip2,ip3, ip4, ip5));
+
 	}
 }

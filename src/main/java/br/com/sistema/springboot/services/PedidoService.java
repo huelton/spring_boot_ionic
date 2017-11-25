@@ -54,7 +54,7 @@ public class PedidoService {
 			throw new ObjectNotFoundException("Objeto nao encontrado! id: "+id
 					            +", tipo: "+Pedido.class.getName());
 		}
-		
+
 		UserSS user = UserService.authenticated();
 		if(user == null || !user.hasHole(Perfil.ADMIN) && !obj.getCliente().getId().equals(user.getId())){
 			throw new AuthorizationException("Acesso Negado!");
