@@ -133,15 +133,20 @@ public class DBService {
 	    cli2.getTelefones().addAll(Arrays.asList("45454545","78549663"));
 	    cli2.addPerfil(Perfil.ADMIN);
 	    
+	    Cliente cli3 = new Cliente(null, "Tome Pereira", "tome@gmail.com","91203915870", TipoCliente.PESSOAFISICA, bCrypt.encode("678"));
+	    cli3.getTelefones().addAll(Arrays.asList("45789923","32119053"));
+	    
 	    Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "38200922", cli1, c1);
 	    Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "40400010", cli1, c2);
 	    Endereco e3 = new Endereco(null, "Rua magalhaes", "2453", "ap 205", "Vila Ferraz", "05893001", cli2, c1);
+	    Endereco e4 = new Endereco(null, "Avenida Castelo Myu Espeno", "240", "Bloco A", "Jardim Planapolis", "35562001", cli3, c3);
 	    
 	    cli1.getEnderecos().addAll(Arrays.asList(e1,e2));
 	    cli2.getEnderecos().addAll(Arrays.asList(e3));
+	    cli3.getEnderecos().addAll(Arrays.asList(e4));
 	    
-	    clienteRepository.save(Arrays.asList(cli1, cli2));
-	    enderecoRepository.save(Arrays.asList(e1,e2,e3));
+	    clienteRepository.save(Arrays.asList(cli1, cli2, cli3));
+	    enderecoRepository.save(Arrays.asList(e1,e2,e3,e4));
 	    
 	    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
 	    
@@ -149,28 +154,39 @@ public class DBService {
 	    
 	    Pedido ped2 = new Pedido(null, sdf.parse("10/10/2017 18:23"), cli1,e2);
 	    
+	    Pedido ped3 = new Pedido(null, sdf.parse("10/10/2017 10:28"), cli3,e4);
+	    
 	    Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
 	    ped1.setPagamento(pagto1);
 	    
 	    Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE,ped2, sdf.parse("20/10/2017 00:00"), null);
 	    ped2.setPagamento(pagto2);
 	    
-	    cli1.getPedidos().addAll(Arrays.asList(ped1,ped2));
+	    Pagamento pagto3 = new PagamentoComBoleto(null, EstadoPagamento.QUITADO,ped3, sdf.parse("20/10/2017 14:25"), null);
+	    ped3.setPagamento(pagto3);
 	    
-        pedidoRepository.save(Arrays.asList(ped1,ped2));
-        pagamentoRepository.save(Arrays.asList(pagto1,pagto2));
+	    cli1.getPedidos().addAll(Arrays.asList(ped1,ped2));
+	    cli3.getPedidos().addAll(Arrays.asList(ped3));
+	    
+        pedidoRepository.save(Arrays.asList(ped1,ped2,ped3));
+        pagamentoRepository.save(Arrays.asList(pagto1,pagto2,pagto3));
         
         ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
-        ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
-        ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+        ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 50.00);
+        ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 2, 800.00);
+        ItemPedido ip4 = new ItemPedido(ped3, p8, 50.00, 3, 800.00);
+        ItemPedido ip5 = new ItemPedido(ped3, p9, 0.00, 4, 100.00);
         
         ped1.getItens().addAll(Arrays.asList(ip1,ip2));
         ped2.getItens().addAll(Arrays.asList(ip3));
+        ped3.getItens().addAll(Arrays.asList(ip4,ip5));
         
         p1.getItens().addAll(Arrays.asList(ip1));
         p2.getItens().addAll(Arrays.asList(ip3));
         p3.getItens().addAll(Arrays.asList(ip2));
+        p8.getItens().addAll(Arrays.asList(ip4));
+        p9.getItens().addAll(Arrays.asList(ip5));
         
-        itemPedidoRepository.save(Arrays.asList(ip1,ip2,ip3));
+        itemPedidoRepository.save(Arrays.asList(ip1,ip2,ip3,ip4,ip5));
 	}
 }
