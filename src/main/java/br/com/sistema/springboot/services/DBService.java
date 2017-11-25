@@ -154,8 +154,7 @@ public class DBService {
 	    
 	    Pedido ped1 = new Pedido(null, sdf.parse("30/09/2017 10:36"), cli1,e1);
 	    
-	    Pedido ped2 = new Pedido(null, sdf.parse("10/10/2017 18:23"), cli1,e2);
-	    
+	    Pedido ped2 = new Pedido(null, sdf.parse("10/10/2017 18:23"), cli1,e2);	    
 
 	    Pedido ped3 = new Pedido(null, sdf.parse("10/10/2017 10:28"), cli3,e4);
 	    
@@ -166,6 +165,7 @@ public class DBService {
 	    ped2.setPagamento(pagto2);
 	    
 	    Pagamento pagto3 = new PagamentoComBoleto(null, EstadoPagamento.QUITADO,ped3, sdf.parse("20/10/2017 14:25"), null);
+	    ped3.setPagamento(pagto3);
 	    
 	    cli1.getPedidos().addAll(Arrays.asList(ped1,ped2));
 	    cli3.getPedidos().addAll(Arrays.asList(ped3));
