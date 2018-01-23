@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,15 +22,21 @@ import br.com.sistema.springboot.services.exceptions.FileException;
 public class S3Service {
 
 	private Logger LOG = LoggerFactory.getLogger(S3Service.class);
+	
 
+	
 	@Autowired
 	private AmazonS3 s3Client;
-
-	@Value("${s3.bucket}")
+	
+	
+	@Value("${s3.bucket}") // ${USERPROFILE} é a pasta home do Usuário, 
 	private String bucketName;
+	
 
 	public URI uploadFile(MultipartFile multipartFile) {
-		try {
+
+		try {			
+			
 			String fileName = multipartFile.getOriginalFilename();
 			InputStream inputStream = multipartFile.getInputStream();
 			String contentType = multipartFile.getContentType();
@@ -48,7 +55,7 @@ public class S3Service {
 			metadado.setContentType(contentType);
 			LOG.info("Iniciando Upload");
 			s3Client.putObject(bucketName, fileName, inputStream, metadado);
-			LOG.info("Iniciando Upload Finalizado");
+			LOG.info("Upload Finalizado");
 
 			return s3Client.getUrl(bucketName, fileName).toURI();
 		} catch (URISyntaxException e) {
