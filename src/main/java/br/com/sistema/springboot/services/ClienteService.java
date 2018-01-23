@@ -34,119 +34,133 @@ public class ClienteService {
 
 	@Autowired
 	private ClienteRepository clienteRepository;
-	
+
 	@Autowired
 	private CidadeRepository cidadeRepository;
-	
+
 	@Autowired
 	private EnderecoRepository enderecoRepository;
-	
+
 	@Autowired
 	private BCryptPasswordEncoder bCrypt;
-	
+
 	@Autowired
 	private S3Service s3Service;
-	
+
 	@Autowired
 	private ImageService imageService;
-	
+
 	@Value("${img.prefix.client.profile}")
 	private String prefix;
-	
+
 	@Value("${img.profile.size}")
 	private Integer size;
-	
-	public Cliente find(Integer id){
-		
+
+	public Cliente find(Integer id) {
+
 		UserSS user = UserService.authenticated();
-		if(user==null || !user.hasHole(Perfil.ADMIN) && !id.equals(user.getId())){
+		if (user == null || !user.hasHole(Perfil.ADMIN) && !id.equals(user.getId())) {
 			throw new AuthorizationException("Acesso Negado!");
 		}
-		
-		
+
 		Cliente obj = clienteRepository.findOne(id);
-		if(obj == null ){
-			throw new ObjectNotFoundException("Objeto nao encontrado! id: "+id
-					            +", tipo: "+Cliente.class.getName());
+		if (obj == null) {
+			throw new ObjectNotFoundException(
+					"Objeto nao encontrado! id: " + id + ", tipo: " + Cliente.class.getName());
 		}
 		return obj;
 	}
-	
-	public Cliente insert(Cliente obj){
+
+	public Cliente insert(Cliente obj) {
 		obj.setId(null);
 		obj = clienteRepository.save(obj);
 		enderecoRepository.save(obj.getEnderecos());
 		return obj;
 	}
-	
+
 	public Cliente update(Cliente obj) {
-		Cliente newObj = find(obj.getId());  //verifica se o id existe antes de atualizar
+		Cliente newObj = find(obj.getId()); // verifica se o id existe antes de
+											// atualizar
 		updateData(newObj, obj);
 		return clienteRepository.save(newObj);
 	}
-	
 
 	public void delete(Integer id) {
-		find(id);  //verifica se o id existe antes de deletar
-		try{
+		find(id); // verifica se o id existe antes de deletar
+		try {
 			clienteRepository.delete(id);
-		}catch(DataIntegrityViolationException e){
+		} catch (DataIntegrityViolationException e) {
 			throw new IntegrityViolationException("Não é possivel excluir porque há pedidos relacionados");
 		}
 	}
 
-	public List<Cliente> findAll() {		
+	public List<Cliente> findAll() {
 		return clienteRepository.findAll();
 	}
-	
-	public Page<Cliente> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
+
+	public Cliente findByEmail(String email) {
+		UserSS user = UserService.authenticated();
+		if (user == null || !user.hasHole(Perfil.ADMIN) && !email.equals(user.getUsername())) {
+			throw new AuthorizationException("Acesso Negado!");
+		}
+
+		Cliente obj = clienteRepository.findOne(user.getId());
+		if (obj == null) {
+			throw new ObjectNotFoundException(
+					"Objeto não encontrado ! Id: " + user.getId() + ", tipo: " + Cliente.class.getName());
+		}
+		
+		return obj;
+	}
+
+	public Page<Cliente> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = new PageRequest(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return clienteRepository.findAll(pageRequest);
 	}
-	
-	public Cliente fromDTO(ClienteDTO objDt){
+
+	public Cliente fromDTO(ClienteDTO objDt) {
 		return new Cliente(objDt.getId(), objDt.getNome(), objDt.getEmail(), null, null, null);
 	}
-	
-	public Cliente fromDTO(ClienteNewDTO objDto){
-		Cliente cli = new Cliente(null, objDto.getNome(), objDto.getEmail(), objDto.getCpfOuCnpj(), 
-				                  TipoCliente.toEnum(objDto.getTipo()), bCrypt.encode(objDto.getSenha()));
+
+	public Cliente fromDTO(ClienteNewDTO objDto) {
+		Cliente cli = new Cliente(null, objDto.getNome(), objDto.getEmail(), objDto.getCpfOuCnpj(),
+				TipoCliente.toEnum(objDto.getTipo()), bCrypt.encode(objDto.getSenha()));
 		Cidade cid = cidadeRepository.findOne(objDto.getCidadeId());
-		Endereco end = new Endereco(null, objDto.getLogradouro(), objDto.getNumero(), objDto.getComplemento(), 
+		Endereco end = new Endereco(null, objDto.getLogradouro(), objDto.getNumero(), objDto.getComplemento(),
 				objDto.getBairro(), objDto.getCep(), cli, cid);
 		cli.getEnderecos().add(end);
 		cli.getTelefones().add(objDto.getTelefone1());
-		
-		if(objDto.getTelefone2()!=null){
+
+		if (objDto.getTelefone2() != null) {
 			cli.getTelefones().add(objDto.getTelefone2());
 		}
-		
-		if(objDto.getTelefone3()!=null){
+
+		if (objDto.getTelefone3() != null) {
 			cli.getTelefones().add(objDto.getTelefone3());
 		}
-		
+
 		return cli;
-		
-	}	
-	
-	private void updateData(Cliente newObj, Cliente obj) {
-		newObj.setNome(obj.getNome());
-		newObj.setEmail(obj.getEmail());		
+
 	}
 
-	public URI uploadProfilePicture(MultipartFile multipartFile){
-		
+	private void updateData(Cliente newObj, Cliente obj) {
+		newObj.setNome(obj.getNome());
+		newObj.setEmail(obj.getEmail());
+	}
+
+	public URI uploadProfilePicture(MultipartFile multipartFile) {
+
 		UserSS user = UserService.authenticated();
-		if(user == null){
+		if (user == null) {
 			throw new AuthorizationException("Acesso Negado!");
 		}
-	
+
 		BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
 		jpgImage = imageService.cropSquare(jpgImage);
 		jpgImage = imageService.resize(jpgImage, size);
-		
+
 		String fileName = prefix + user.getId() + ".jpg";
-		
+
 		return s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");
 
 	}
