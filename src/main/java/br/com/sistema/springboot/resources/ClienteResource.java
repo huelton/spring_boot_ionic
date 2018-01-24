@@ -41,10 +41,10 @@ public class ClienteResource {
 	
 	//BUSCA POR EMAIL
 	@RequestMapping(value = "/email", method = RequestMethod.GET)
-	public ResponseEntity<ClienteDTO> find(@RequestParam(value = "email") String email) {
+	public ResponseEntity<Cliente> find(@RequestParam(value = "email") String email) {
 		Cliente obj = clienteService.findByEmail(email);
 
-		return ResponseEntity.ok().body(new ClienteDTO(obj));
+		return ResponseEntity.ok().body(obj);
 
 	}
 	
