@@ -83,12 +83,7 @@ public class ClienteResource {
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<ClienteDTO>> findAll() {
 		List<Cliente> list = clienteService.findAll();
-		List<ClienteDTO> listDto = list.stream().map(obj -> new ClienteDTO(obj)).collect(Collectors.toList()); // CONVERTE
-																												// UMA
-																												// LISTA
-																												// PARA
-																												// OUTRA
-																												// LISTA
+		List<ClienteDTO> listDto = list.stream().map(obj -> new ClienteDTO(obj)).collect(Collectors.toList()); // CONVERTE UMA LISTA PARA OUTRA LISTA
 		return ResponseEntity.ok().body(listDto);
 
 	}
@@ -101,13 +96,7 @@ public class ClienteResource {
 			@RequestParam(value = "orderBy", defaultValue = "nome") String orderBy,
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
 		Page<Cliente> list = clienteService.findPage(page, linesPerPage, orderBy, direction);
-		Page<ClienteDTO> listDto = list.map(obj -> new ClienteDTO(obj)); // CONVERTE
-																			// UMA
-																			// PAGE
-																			// PARA
-																			// OUTRA
-																			// PAGE
-																			// DTO
+		Page<ClienteDTO> listDto = list.map(obj -> new ClienteDTO(obj)); // CONVERTE UMA PAGE PARA OUTRA PAGE DTO
 		return ResponseEntity.ok().body(listDto);
 
 	}
