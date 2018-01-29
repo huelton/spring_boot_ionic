@@ -203,26 +203,34 @@ public class DBService {
 
 		Estado est1 = new Estado(null, "Minas Gerais");
 		Estado est2 = new Estado(null, "São Paulo");
+		Estado est3 = new Estado(null, "Rio de Janeiro");
 		
 		Cidade c1 = new Cidade(null,"Uberlandia",est1);
 		Cidade c2 = new Cidade(null,"São Paulo",est2);
 		Cidade c3 = new Cidade(null,"Campinas",est2);
+		Cidade c4 = new Cidade(null,"Belo Horizonte",est1);
+		Cidade c5 = new Cidade(null,"Montes Claros",est1);
+		Cidade c6 = new Cidade(null,"Sorocaba",est2);
+		Cidade c7 = new Cidade(null,"Rio de Janeiro",est3);		
+		Cidade c8 = new Cidade(null,"Niteroi",est3);
 		
-		est1.getCidades().addAll(Arrays.asList(c1));
-		est2.getCidades().addAll(Arrays.asList(c2,c3));
 		
 		
-		estadoRepository.save(Arrays.asList(est1,est2));		
-		cidadeRepository.save(Arrays.asList(c1,c2,c3));
+		est1.getCidades().addAll(Arrays.asList(c1,c4,c5));
+		est2.getCidades().addAll(Arrays.asList(c2,c3,c6));
+		est3.getCidades().addAll(Arrays.asList(c7,c8));
+		
+		estadoRepository.save(Arrays.asList(est1,est2,est3));		
+		cidadeRepository.save(Arrays.asList(c1,c2,c3,c4,c5,c6,c7,c8));
 		
 		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com","53275718665", TipoCliente.PESSOAFISICA, bCrypt.encode("123"));
 	    cli1.getTelefones().addAll(Arrays.asList("23455633","55332333"));
 	    
-	    Cliente cli2 = new Cliente(null, "Huelton Santos", "hueltondihon@gmail.com","37944877458", TipoCliente.PESSOAFISICA, bCrypt.encode("345"));
+	    Cliente cli2 = new Cliente(null, "Juliana Dias", "julianadias@gmail.com","37944877458", TipoCliente.PESSOAFISICA, bCrypt.encode("456"));
 	    cli2.getTelefones().addAll(Arrays.asList("45454545","78549663"));
 	    cli2.addPerfil(Perfil.ADMIN);
 	    
-	    Cliente cli3 = new Cliente(null, "Tome Pereira", "tome@gmail.com","91203915870", TipoCliente.PESSOAFISICA, bCrypt.encode("678"));
+	    Cliente cli3 = new Cliente(null, "Huelton Santos", "hueltondihon@gmail.com","91203915870", TipoCliente.PESSOAFISICA, bCrypt.encode("789"));
 	    cli3.getTelefones().addAll(Arrays.asList("45789923","32119053"));
 	    
 	    Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "38200922", cli1, c1);

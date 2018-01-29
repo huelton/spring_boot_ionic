@@ -41,7 +41,7 @@ public class ClienteResource {
 	
 	//BUSCA POR EMAIL
 	@RequestMapping(value = "/email", method = RequestMethod.GET)
-	public ResponseEntity<Cliente> find(@RequestParam(value = "email") String email) {
+	public ResponseEntity<Cliente> find(@RequestParam(value = "value") String email) {
 		Cliente obj = clienteService.findByEmail(email);
 
 		return ResponseEntity.ok().body(obj);
@@ -59,7 +59,7 @@ public class ClienteResource {
 		return ResponseEntity.created(uri).build();
 	}
 
-	// ATUALIZA UMA CATEGORIA
+	// ATUALIZA UM CLIENTE
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody ClienteDTO objDto, @PathVariable Integer id) {
 		Cliente obj = clienteService.fromDTO(objDto);
@@ -69,7 +69,7 @@ public class ClienteResource {
 		return ResponseEntity.noContent().build();
 	}
 
-	// DELETA UMA CATEGORIA
+	// DELETA UM CLIENTE PELO ID
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
@@ -78,7 +78,7 @@ public class ClienteResource {
 		return ResponseEntity.noContent().build();
 	}
 
-	// RETORNA TODAS AS CATEGORIAS
+	// RETORNA TODOS OS CLIENTES
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<ClienteDTO>> findAll() {

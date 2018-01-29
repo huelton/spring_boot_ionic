@@ -15,7 +15,7 @@ public class FieldMessage implements Serializable{
 	public FieldMessage(String fieldName, String message) {
 		super();
 		this.fieldName = fieldName;
-		this.message = message;
+		this.setMessage(message);
 	}
 
 	public String getFieldName() {
@@ -26,12 +26,13 @@ public class FieldMessage implements Serializable{
 		this.fieldName = fieldName;
 	}
 
-	public String getMsg() {
+	public String getMessage() {
 		return message;
 	}
 
-	public void setMsg(String msg) {
-		this.message = msg;
+	public void setMessage(String message) {
+		this.message = message;
 	}
+
 
 }

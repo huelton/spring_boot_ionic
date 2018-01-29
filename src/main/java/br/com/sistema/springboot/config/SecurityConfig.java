@@ -48,6 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			"/produtos/**",
 			"/categorias/**",
 			"/estados/**"
+
 	};
 	
 	private static final String[] PLUBLIC_MATCHERS_POST = {
